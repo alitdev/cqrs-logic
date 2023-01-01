@@ -14,11 +14,11 @@ def main():
     channel.queue_declare(queue='hello')
 
     def choose_command(ch, method, properties, body):
-        if body == "hw":
-            command = HelloWorldCommand()
-        elif body.startswith("msg: "):
-            message = body.split(" ")[1]
-            command = MessageCommand(message)
+        body = body.decode('utf-8')
+        if body == "HWC":
+            command = HelloWorldCommand.deserialize(body)
+        elif body.startswith("MC: "):
+            command = MessageCommand.deserialize(body)
         else:
             print("ERROR: COMMAND NOT FOUND")
             return
